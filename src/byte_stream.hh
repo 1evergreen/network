@@ -4,12 +4,14 @@
 #include <string>
 #include <string_view>
 
+using namespace std;
 class Reader;
 class Writer;
 
 class ByteStream
 {
 public:
+  using LEN_T = uint64_t;
   explicit ByteStream( uint64_t capacity );
 
   // Helper functions (provided) to access the ByteStream's Reader and Writer interfaces
@@ -25,6 +27,12 @@ protected:
   // Please add any additional state to the ByteStream here, and not to the Writer and Reader interfaces.
   uint64_t capacity_;
   bool error_ {};
+  
+  bool closed_;
+  LEN_T total_pushed_;
+  LEN_T total_poped_;
+  string buffer;
+
 };
 
 class Writer : public ByteStream
