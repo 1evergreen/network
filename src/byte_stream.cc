@@ -17,9 +17,7 @@ void Writer::push( string data )
   if(is_closed() || has_error() || data.empty()){
     return;
   }
-  LEN_T l = min(data.size(), available_capacity());
-  buffer.append(data.substr(0, l));
-  total_pushed_ += l;
+  write(data);
   return;
 }
 

@@ -32,7 +32,13 @@ protected:
   LEN_T total_pushed_;
   LEN_T total_poped_;
   string buffer;
-
+public:
+  void close_write() {closed_ = true;}
+  void write(string& data){
+    LEN_T l = min(data.size(), capacity_ - buffer.size());
+    buffer.append(data.substr(0, l));
+    total_pushed_ += l;
+  }
 };
 
 class Writer : public ByteStream
