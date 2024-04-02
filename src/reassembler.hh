@@ -1,13 +1,15 @@
 #pragma once
 
 #include "byte_stream.hh"
+#include <deque>
 
 class Reassembler
 {
 public:
   // Construct Reassembler to write into given ByteStream.
-  explicit Reassembler( ByteStream&& output ) : output_( std::move( output ) ) {}
-
+  explicit Reassembler( ByteStream&& output ) : output_( std::move( output ) ),
+   assembler(), mask(), _first_unassem(0), _last_byte(0), FIN(false){}
+  using LEN_T = uint64_t;
   /*
    * Insert a new substring to be reassembled into a ByteStream.
    *   `first_index`: the index of the first byte of the substring
@@ -42,4 +44,20 @@ public:
 
 private:
   ByteStream output_; // the Reassembler writes to this ByteStream
+
+  deque<char> assembler; // a assembler to assemble strings 
+  deque<bool> mask; // a assembler to assemble strings 
+
+  LEN_T _first_unassem; // The first index of unassembled byte
+  LEN_T _last_byte;
+  bool FIN;
+
+public:
+  bool finished() const {return FIN && _last_byte == _first_unassem;}
+  bool not_connected(){return writer().is_closed() || output_.has_error();}
+  LEN_T first_unaccess(){return _first_unassem + writer().available_capacity();}
+
+  void push_assembled();
+  void reset_assembler();
+  void assembly(uint64_t first_index, string& data);
 };
