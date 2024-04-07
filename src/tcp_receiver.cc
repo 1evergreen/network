@@ -1,6 +1,7 @@
 #include "tcp_receiver.hh"
 #include <optional>
 #include <cstdint>
+#include <iostream>
 
 using namespace std;
 
@@ -18,9 +19,10 @@ void TCPReceiver::receive( TCPSenderMessage message )
   }
   if(reassembler_.SYN){
     bytes_sent += message.sequence_length();
-    LEN_T first_index = message.seqno.unwrap(isn_, bytes_sent);
-    reassembler_.insert(first_index, message.payload, message.FIN);
-
+    LEN_T absseqno = message.seqno.unwrap(isn_, bytes_sent);
+    if(absseqno){
+      reassembler_.insert(absseqno - 1, message.payload, message.FIN);
+    }
     if(message.FIN){
       reassembler_.set_FIN();
     }

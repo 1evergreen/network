@@ -30,9 +30,6 @@ public:
 private:
   Reassembler reassembler_;
 
-  LEN_T abs_seqn {0};
+  LEN_T bytes_sent {0};
   Wrap32 isn_ {0};
-  bool SYN {false};
-  // bool FIN {false};
-  // void shut_down();
 };
