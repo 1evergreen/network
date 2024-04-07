@@ -32,3 +32,8 @@ Remaining Bugs:
 - Optional: I think you could make this lab better by: [describe]
 
 - Optional: I'm not sure about: [describe]
+
+采用的deque数据结构进行缓存未组装确认的数据。
+
+问题：
+    内存分配开销

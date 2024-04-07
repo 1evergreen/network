@@ -60,4 +60,10 @@ public:
   void push_assembled();
   void reset_assembler();
   void assembly(uint64_t first_index, string& data);
+
+  // interface for tcp_receiver
+  bool has_error() const {return output_.has_error();}
+  LEN_T ackno() const {return _first_unassem + 1;}
+  LEN_T window_size() const {return writer().available_capacity();}
+
 };

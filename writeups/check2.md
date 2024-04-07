@@ -34,3 +34,18 @@ Remaining Bugs:
 - Optional: I'm not sure about: [describe]
 
 - Optional: I made an extra test I think will be helpful in catching bugs: [describe where to find]
+
+1. Wrap32
+接口
+
+
+2. TCPReceiver
+
+接口：
+1. receive：
+    接受一个TCPSenderMessage
+    当SYN时：
+        - 设置ISN，设置状态
+    
+    
+    重复的TCPSenderMessage

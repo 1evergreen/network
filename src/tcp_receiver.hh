@@ -7,6 +7,8 @@
 class TCPReceiver
 {
 public:
+
+  using LEN_T = uint64_t;
   // Construct with given Reassembler
   explicit TCPReceiver( Reassembler&& reassembler ) : reassembler_( std::move( reassembler ) ) {}
 
@@ -27,4 +29,10 @@ public:
 
 private:
   Reassembler reassembler_;
+
+  // LEN_T 
+  Wrap32 isn_ {0};
+  bool SYN {false};
+  bool FIN {false};
+  // void shut_down();
 };
