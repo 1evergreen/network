@@ -65,5 +65,8 @@ public:
   bool has_error() const {return output_.has_error();}
   LEN_T ackno() const {return _first_unassem + 1;}
   LEN_T window_size() const {return writer().available_capacity();}
+  void close() {output_.close_write();}
+
+  void set_FIN(){FIN = true;}
 
 };
