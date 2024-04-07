@@ -49,7 +49,7 @@ private:
   deque<bool> mask; // a assembler to assemble strings 
 
   LEN_T _first_unassem; // The first index of unassembled byte
-  LEN_T _last_byte;
+  LEN_T _last_byte; //最后一位的序列号
 
 
 public:
@@ -63,11 +63,11 @@ public:
 
   // interface for tcp_receiver
   bool has_error() const {return output_.has_error();}
-  LEN_T ackno() const {return _first_unassem + SYN + FIN;}
+  void set_error()  { output_.set_error();}
+  LEN_T ackno() const {return _first_unassem + SYN + finished();}
   LEN_T window_size() const {return writer().available_capacity();}
   void close() {output_.close_write();}
 
-  void set_FIN(){FIN = true;}
   bool SYN {false};
   bool FIN {false};
 };

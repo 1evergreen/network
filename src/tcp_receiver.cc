@@ -11,6 +11,7 @@ void TCPReceiver::receive( TCPSenderMessage message )
   (void)message;
 
   if(message.RST){
+    reassembler_.set_error();
     reassembler_.close();
   }
   if(message.SYN){
@@ -22,9 +23,6 @@ void TCPReceiver::receive( TCPSenderMessage message )
     LEN_T absseqno = message.seqno.unwrap(isn_, bytes_sent);
     if(message.SYN && absseqno == 0){ absseqno = 1;}
     reassembler_.insert(absseqno - 1, message.payload, message.FIN);
-    if(message.FIN){
-      reassembler_.set_FIN();
-    }
     if(reassembler_.finished()){
       reassembler_.close();
     }

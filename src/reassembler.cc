@@ -42,7 +42,6 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
       output_.close_write();
     }
   }
-
 }
 
 uint64_t Reassembler::bytes_pending() const
