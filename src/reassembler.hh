@@ -8,7 +8,7 @@ class Reassembler
 public:
   // Construct Reassembler to write into given ByteStream.
   explicit Reassembler( ByteStream&& output ) : output_( std::move( output ) ),
-   assembler(), mask(), _first_unassem(0), _last_byte(0), FIN(false){}
+   assembler(), mask(), _first_unassem(0), _last_byte(0){}
   using LEN_T = uint64_t;
   /*
    * Insert a new substring to be reassembled into a ByteStream.
@@ -50,7 +50,7 @@ private:
 
   LEN_T _first_unassem; // The first index of unassembled byte
   LEN_T _last_byte;
-  bool FIN;
+
 
 public:
   bool finished() const {return FIN && _last_byte == _first_unassem;}
@@ -63,10 +63,11 @@ public:
 
   // interface for tcp_receiver
   bool has_error() const {return output_.has_error();}
-  LEN_T ackno() const {return _first_unassem + 1 + FIN;}
+  LEN_T ackno() const {return _first_unassem + SYN + FIN;}
   LEN_T window_size() const {return writer().available_capacity();}
   void close() {output_.close_write();}
 
   void set_FIN(){FIN = true;}
-
+  bool SYN {false};
+  bool FIN {false};
 };
