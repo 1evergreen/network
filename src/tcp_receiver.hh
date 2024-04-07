@@ -33,6 +33,6 @@ private:
   // LEN_T 
   Wrap32 isn_ {0};
   bool SYN {false};
-  bool FIN {false};
+  // bool FIN {false};
   // void shut_down();
 };
