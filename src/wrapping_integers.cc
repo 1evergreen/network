@@ -15,7 +15,7 @@ uint64_t Wrap32::unwrap( Wrap32 zero_point, uint64_t checkpoint ) const
   auto check = Wrap32::wrap(checkpoint, zero_point);
   uint32_t gap = raw_value_ - check.raw_value_;
   uint64_t abs_seqno = gap + checkpoint;
-  if(abs_seqno - checkpoint > (1ULL << 31)){
+  if(abs_seqno >= (1ULL << 32) && abs_seqno - checkpoint > (1ULL << 31)){
     return abs_seqno - (1ULL << 32);
   }
   return abs_seqno;
