@@ -10,9 +10,9 @@ void TCPReceiver::receive( TCPSenderMessage message )
   // Your code here.
   (void)message;
 
-  // if(message.RST){
-
-  // }
+  if(message.RST){
+    reassembler_.close();
+  }
   if(message.SYN){
     reassembler_.SYN = true;
     isn_ = message.seqno;
@@ -20,9 +20,8 @@ void TCPReceiver::receive( TCPSenderMessage message )
   if(reassembler_.SYN){
     bytes_sent += message.sequence_length();
     LEN_T absseqno = message.seqno.unwrap(isn_, bytes_sent);
-    if(absseqno){
-      reassembler_.insert(absseqno - 1, message.payload, message.FIN);
-    }
+    if(message.SYN && absseqno == 0){ absseqno = 1;}
+    reassembler_.insert(absseqno - 1, message.payload, message.FIN);
     if(message.FIN){
       reassembler_.set_FIN();
     }
